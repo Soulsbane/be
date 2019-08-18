@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os/exec"
+	"strings"
+)
 
 // Command holds the command name and the command
 type Command struct {
@@ -16,6 +20,19 @@ type Commands struct {
 func (c *Commands) addCommand(name string, commandString string) {
 	command := Command{commandString, name}
 	c.commands = append(c.commands, command)
+}
+
+func (c *Commands) run(name string) {
+	for _, v := range c.commands {
+		if v.name == name {
+			fmt.Println("Found the command:", v.command)
+			args := strings.Split(v.command, " ")
+			execCommand := exec.Command(args[0], args[1:]...)
+			execCommand.Start()
+		} else {
+			fmt.Println("Failed to find command!")
+		}
+	}
 }
 
 func (c *Commands) dump() {
