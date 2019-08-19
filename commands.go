@@ -26,9 +26,19 @@ func (c *Commands) run(name string) {
 	for _, v := range c.commands {
 		if v.name == name {
 			fmt.Println("Found the command:", v.command)
+
 			args := strings.Split(v.command, " ")
-			execCommand := exec.Command(args[0], args[1:]...)
-			execCommand.Start()
+			argsLength := len(args)
+
+			if argsLength > 0 {
+				if argsLength == 1 {
+					execCommand := exec.Command(args[0])
+					execCommand.Start()
+				} else {
+					execCommand := exec.Command(args[0], args[1:]...)
+					execCommand.Start()
+				}
+			}
 		} else {
 			fmt.Println("Failed to find command!")
 		}
