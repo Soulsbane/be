@@ -42,7 +42,7 @@ func (c *Commands) run(name string) {
 				}
 			}
 		} else {
-			fmt.Println("Failed to find command", name)
+			//fmt.Println("Failed to find command", name)
 		}
 	}
 }
