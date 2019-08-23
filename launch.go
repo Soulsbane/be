@@ -1,10 +1,31 @@
 package main
 
-func main() {
-	var commands Commands
+import (
+	"fmt"
 
-	commands.addCommand("minion", "java -jar /home/soulsbane/bin/minion/Minion-jfx.jar")
-	commands.dump()
-	commands.run("minion")
-	commands.run("what")
+	lua "github.com/yuin/gopher-lua"
+	luar "layeh.com/gopher-luar"
+)
+
+func main() {
+	//var commands Commands
+	L := lua.NewState()
+	defer L.Close()
+
+	const script = `print("Adding command from Lua") Commands:addCommand("subl", "subl")`
+	commands := &Commands{}
+	L.SetGlobal("Commands", luar.New(L, commands))
+
+	commands.AddCommand("wow", "lsd")
+	commands.list()
+	fmt.Println("")
+
+	if err := L.DoString(script); err != nil {
+		panic(err)
+	}
+
+	commands.run("wow")
+	commands.run("subl")
+	fmt.Println("")
+	commands.list()
 }

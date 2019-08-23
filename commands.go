@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+
+	"github.com/cheynewallace/tabby"
 )
 
 // Command holds the command name and the command
@@ -12,21 +14,21 @@ type Command struct {
 	name    string
 }
 
-// Commands this is it
+// Commands holds a list of commands.
 type Commands struct {
 	commands []Command
 }
 
-func (c *Commands) addCommand(name string, commandString string) {
+// AddCommand Add a command to the list of commands.
+func (c *Commands) AddCommand(name string, commandString string) {
 	command := Command{commandString, name}
 	c.commands = append(c.commands, command)
+	fmt.Println("Added command", name)
 }
 
 func (c *Commands) run(name string) {
 	for _, v := range c.commands {
 		if v.name == name {
-			fmt.Println("Found the command:", v.command)
-
 			args := strings.Split(v.command, " ")
 			argsLength := len(args)
 
@@ -40,14 +42,18 @@ func (c *Commands) run(name string) {
 				}
 			}
 		} else {
-			fmt.Println("Failed to find command!")
+			fmt.Println("Failed to find command", name)
 		}
 	}
 }
 
-func (c *Commands) dump() {
-	fmt.Println("Dumping")
+func (c *Commands) list() {
+	t := tabby.New()
+	t.AddHeader("Name", "Command")
+
 	for _, v := range c.commands {
-		fmt.Println(v.command, "=>", v.name)
+		t.AddLine(v.name, v.command)
 	}
+
+	t.Print()
 }
