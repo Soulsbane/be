@@ -36,7 +36,7 @@ func (c *Commands) AddCommand(name string, commandString string) {
 }
 
 // HasCommand returns whether a map key exists.
-func (c Commands) HasCommand(name string) bool {
+func (c *Commands) HasCommand(name string) bool {
 	if _, ok := c.commandsMap[name]; ok {
 		return ok
 	}
