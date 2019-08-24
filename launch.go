@@ -13,7 +13,8 @@ func main() {
 	defer L.Close()
 
 	const script = `print("Adding command from Lua") Commands:addCommand("subl", "subl")`
-	commands := &Commands{}
+
+	commands := NewCommands()
 	L.SetGlobal("Commands", luar.New(L, commands))
 
 	commands.AddCommand("wow", "lsd")
