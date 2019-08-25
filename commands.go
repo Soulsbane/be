@@ -32,7 +32,11 @@ func NewCommands() *Commands {
 
 // AddCommand adds a command to the list of commands.
 func (c *Commands) AddCommand(name string, commandString string) {
-	c.commandsMap[name] = commandString
+	if c.HasCommand(name) {
+		fmt.Println(name, "already exists!")
+	} else {
+		c.commandsMap[name] = commandString
+	}
 }
 
 // HasCommand returns whether a map key exists.
