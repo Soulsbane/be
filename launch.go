@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	//var commands Commands
 	L := lua.NewState()
 	defer L.Close()
 
