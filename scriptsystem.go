@@ -10,19 +10,20 @@ import (
 
 // ScriptSystem use Lua for scripting.
 type ScriptSystem struct {
-	state    *lua.LState
-	commands *Commands
+	state *lua.LState
 }
 
 // NewScriptSystem Initializes the Lua Script System
 func NewScriptSystem() *ScriptSystem {
 	var scriptSystem ScriptSystem
-
 	scriptSystem.state = lua.NewState()
-	scriptSystem.commands = NewCommands()
-	scriptSystem.state.SetGlobal("Commands", luar.New(scriptSystem.state, scriptSystem.commands))
 
 	return &scriptSystem
+}
+
+// SetGlobal Just like the Lua version.
+func (s *ScriptSystem) SetGlobal(name string, value interface{}) {
+	s.state.SetGlobal(name, luar.New(s.state, value))
 }
 
 // DestroyScriptSystem Calls lua.LState.Close

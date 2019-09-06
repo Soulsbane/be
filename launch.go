@@ -3,17 +3,22 @@ package main
 import "fmt"
 
 func main() {
-	const script = `print("Adding command from Lua") Commands:addCommand("subl", "subl")`
+	const script = `print("Adding command from Lua")
+	Commands:addCommand("subl", "subl")
+	--Commands:run("subl")
+	`
 
 	scriptSystem := NewScriptSystem()
 
-	scriptSystem.commands.AddCommand("wow", "lsd")
-	scriptSystem.commands.list()
-	fmt.Println("")
+	var commands *Commands
 
-	scriptSystem.DoString(script)
-	scriptSystem.commands.run("wow")
-	scriptSystem.commands.run("subl")
+	commands = NewCommands()
+	commands.AddCommand("wow", "lsd")
+	commands.list()
+
+	scriptSystem.SetGlobal("Commands", commands)
 	fmt.Println("")
-	scriptSystem.commands.list()
+	scriptSystem.DoString(script)
+	commands.run("subl")
+	commands.list()
 }
