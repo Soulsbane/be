@@ -14,6 +14,7 @@ func main() {
 
 	commands = NewCommands()
 	commands.AddCommand("wow", "lsd")
+	commands.AddOutputCommand("lsd", "lsd -lt")
 	commands.list()
 
 	scriptSystem.SetGlobal("Commands", commands)
@@ -21,4 +22,8 @@ func main() {
 	scriptSystem.DoString(script)
 	commands.run("subl")
 	commands.list()
+	/*fmt.Println(commands.HasCommand("lsd"))
+	fmt.Println(commands.getCommandIndex("subl"))
+	fmt.Println(commands.getCommandIndex("lsddddd"))
+	commands.runCommandAtIndex(commands.getCommandIndex("lsd"))*/
 }

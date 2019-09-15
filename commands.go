@@ -8,26 +8,30 @@ import (
 	"github.com/cheynewallace/tabby"
 )
 
-// Commands holds a list of commands.
-type Commands struct {
-	commandsMap map[string]string
+type command struct {
+	commandName   string
+	commandString string
+	showOutput    bool
 }
 
-// MakeCommandsMap Initializes the command map
-func (c *Commands) makeCommandsMap() {
-	/*
-		Use like so:
-		commands := &Commands{}
-		commands.MakeCommandsMap()
-	*/
-	c.commandsMap = make(map[string]string)
+// Commands holds a list of commands.
+type Commands struct {
+	commandsArray []command
 }
 
 // NewCommands Initializes the command map
 func NewCommands() *Commands {
-	var commands Commands
-	commands.commandsMap = make(map[string]string)
-	return &commands
+	var newCommands Commands
+
+	newCommands.commandsArray = []command{
+		command{
+			commandName:   "",
+			commandString: "",
+			showOutput:    false,
+		},
+	}
+
+	return &newCommands
 }
 
 // AddCommand adds a command to the list of commands.
@@ -35,22 +39,52 @@ func (c *Commands) AddCommand(name string, commandString string) {
 	if c.HasCommand(name) {
 		fmt.Println(name, "command name already exists!")
 	} else {
-		c.commandsMap[name] = commandString
+		var newCommand = command{name, commandString, false}
+		c.commandsArray = append(c.commandsArray, newCommand)
+	}
+}
+
+// AddOutputCommand adds a command to the list of commands.
+func (c *Commands) AddOutputCommand(name string, commandString string) {
+	if c.HasCommand(name) {
+		fmt.Println(name, "command name already exists!")
+	} else {
+		var newCommand = command{name, commandString, true}
+		c.commandsArray = append(c.commandsArray, newCommand)
 	}
 }
 
 // HasCommand returns whether a map key exists.
 func (c *Commands) HasCommand(name string) bool {
-	if _, ok := c.commandsMap[name]; ok {
-		return ok
+	for i := range c.commandsArray {
+		if c.commandsArray[i].commandName == name {
+			return true
+		}
 	}
 
 	return false
 }
 
+func (c *Commands) getCommandIndex(name string) int {
+	for i, val := range c.commandsArray {
+		if val.commandName == name {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func (c *Commands) runCommandAtIndex(index int) {
+	fmt.Println(c.commandsArray[index].commandName)
+}
+
 func (c *Commands) run(name string) {
-	if c.HasCommand(name) {
-		args := strings.Split(c.commandsMap[name], " ")
+	index := c.getCommandIndex(name)
+
+	if index >= 0 {
+		command := c.commandsArray[index]
+		args := strings.Split(command.commandString, " ")
 		argsLength := len(args)
 
 		if argsLength > 0 {
@@ -72,8 +106,8 @@ func (c *Commands) list() {
 	t := tabby.New()
 	t.AddHeader("Name", "Command")
 
-	for key, value := range c.commandsMap {
-		t.AddLine(key, value)
+	for i := range c.commandsArray {
+		t.AddLine(c.commandsArray[i].commandName, c.commandsArray[i].commandString)
 	}
 
 	t.Print()
