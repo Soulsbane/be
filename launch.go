@@ -1,12 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"path/filepath"
+
+	"github.com/kirsle/configdir"
+)
 
 func main() {
-	const script = `print("Adding command from Lua")
-	Commands:addCommand("subl", "subl")
-	--Commands:run("subl")
-	`
+	configPath := configdir.LocalConfig("Raijinsoft/launch")
+	commandFilesPath := filepath.Join(configPath, "commands")
+	err := configdir.MakePath(commandFilesPath)
+
+	if err != nil {
+		panic(err)
+	}
 
 	scriptSystem := NewScriptSystem()
 
@@ -19,7 +27,8 @@ func main() {
 
 	scriptSystem.SetGlobal("Commands", commands)
 	fmt.Println("")
-	scriptSystem.DoString(script)
+	scriptSystem.DoFiles(commandFilesPath)
+
 	commands.run("subl")
 	commands.list()
 	/*fmt.Println(commands.HasCommand("lsd"))
