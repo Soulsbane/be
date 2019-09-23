@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/cheynewallace/tabby"
+	"github.com/brettski/go-termtables"
 )
 
 type command struct {
@@ -103,12 +103,12 @@ func (c *Commands) run(name string) {
 }
 
 func (c *Commands) list() {
-	t := tabby.New()
-	t.AddHeader("Name", "Command")
+	table := termtables.CreateTable()
+	table.AddHeaders("Name", "Command")
 
 	for i := range c.commandsArray {
-		t.AddLine(c.commandsArray[i].commandName, c.commandsArray[i].commandString)
+		table.AddRow(c.commandsArray[i].commandName, c.commandsArray[i].commandString)
 	}
 
-	t.Print()
+	fmt.Println(table.Render())
 }
