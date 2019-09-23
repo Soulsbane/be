@@ -88,10 +88,7 @@ func (c *Commands) run(name string) {
 		argsLength := len(args)
 
 		if argsLength > 0 {
-			if argsLength == 1 {
-				execCommand := exec.Command(args[0])
-				execCommand.Start()
-
+			if argsLength == 1 { // FIXME: Could split this up better.
 				if command.showOutput {
 					output, err := exec.Command(args[0]).Output()
 
@@ -104,7 +101,6 @@ func (c *Commands) run(name string) {
 					execCommand := exec.Command(args[0])
 					execCommand.Start()
 				}
-
 			} else {
 				if command.showOutput {
 					output, err := exec.Command(args[0], args[1:]...).Output()
@@ -123,7 +119,6 @@ func (c *Commands) run(name string) {
 	} else {
 		fmt.Println("Command not found: ", name)
 	}
-
 }
 
 func (c *Commands) list() {
