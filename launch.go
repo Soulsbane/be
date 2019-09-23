@@ -30,8 +30,13 @@ func main() {
 
 	if len(os.Args) >= 2 {
 		commandName := os.Args[1]
-		fmt.Println("Running command:", commandName)
-		commands.run(commandName)
+
+		if commandName == "list" {
+			commands.list()
+		} else {
+			fmt.Println("Running command:", commandName)
+			commands.run(commandName)
+		}
 	} else {
 		fmt.Println("Invalid option passed!")
 	}
