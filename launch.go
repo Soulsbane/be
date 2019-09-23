@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/kirsle/configdir"
@@ -23,16 +24,15 @@ func main() {
 	commands = NewCommands()
 	commands.AddCommand("wow", "lsd")
 	commands.AddOutputCommand("lsd", "lsd -lt")
-	commands.list()
 
 	scriptSystem.SetGlobal("Commands", commands)
-	fmt.Println("")
 	scriptSystem.DoFiles(commandFilesPath)
 
-	commands.run("subl")
-	commands.list()
-	/*fmt.Println(commands.HasCommand("lsd"))
-	fmt.Println(commands.getCommandIndex("subl"))
-	fmt.Println(commands.getCommandIndex("lsddddd"))
-	commands.runCommandAtIndex(commands.getCommandIndex("lsd"))*/
+	if len(os.Args) >= 2 {
+		commandName := os.Args[1]
+		fmt.Println("Running command:", commandName)
+		commands.run(commandName)
+	} else {
+		fmt.Println("Invalid option passed!")
+	}
 }
