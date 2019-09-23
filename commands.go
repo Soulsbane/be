@@ -91,9 +91,33 @@ func (c *Commands) run(name string) {
 			if argsLength == 1 {
 				execCommand := exec.Command(args[0])
 				execCommand.Start()
+
+				if command.showOutput {
+					output, err := exec.Command(args[0]).Output()
+
+					if err != nil {
+						panic(err)
+					}
+
+					fmt.Println(string(output))
+				} else {
+					execCommand := exec.Command(args[0])
+					execCommand.Start()
+				}
+
 			} else {
-				execCommand := exec.Command(args[0], args[1:]...)
-				execCommand.Start()
+				if command.showOutput {
+					output, err := exec.Command(args[0], args[1:]...).Output()
+
+					if err != nil {
+						panic(err)
+					}
+
+					fmt.Println(string(output))
+				} else {
+					execCommand := exec.Command(args[0], args[1:]...)
+					execCommand.Start()
+				}
 			}
 		}
 	} else {
