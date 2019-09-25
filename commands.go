@@ -75,6 +75,36 @@ func (c *Commands) getCommandIndex(name string) int {
 	return -1
 }
 
+func (c *Commands) handleSingleCommand(args []string, showOutput bool) {
+	if showOutput {
+		output, err := exec.Command(args[0]).Output()
+
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(string(output))
+	} else {
+		execCommand := exec.Command(args[0])
+		execCommand.Start()
+	}
+}
+
+func (c *Commands) handleMultiCommand(args []string, showOutput bool) {
+	if showOutput {
+		output, err := exec.Command(args[0], args[1:]...).Output()
+
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(string(output))
+	} else {
+		execCommand := exec.Command(args[0], args[1:]...)
+		execCommand.Start()
+	}
+}
+
 func (c *Commands) runCommandAtIndex(index int) {
 	fmt.Println(c.commandsArray[index].commandName)
 }
@@ -88,32 +118,10 @@ func (c *Commands) run(name string) {
 		argsLength := len(args)
 
 		if argsLength > 0 {
-			if argsLength == 1 { // FIXME: Could split this up better.
-				if command.showOutput {
-					output, err := exec.Command(args[0]).Output()
-
-					if err != nil {
-						panic(err)
-					}
-
-					fmt.Println(string(output))
-				} else {
-					execCommand := exec.Command(args[0])
-					execCommand.Start()
-				}
+			if argsLength == 1 {
+				c.handleSingleCommand(args, command.showOutput)
 			} else {
-				if command.showOutput {
-					output, err := exec.Command(args[0], args[1:]...).Output()
-
-					if err != nil {
-						panic(err)
-					}
-
-					fmt.Println(string(output))
-				} else {
-					execCommand := exec.Command(args[0], args[1:]...)
-					execCommand.Start()
-				}
+				c.handleMultiCommand(args, command.showOutput)
 			}
 		}
 	} else {
