@@ -11,6 +11,8 @@ import (
 func main() {
 	configPath := configdir.LocalConfig("Raijinsoft/launch")
 	commandFilesPath := filepath.Join(configPath, "commands")
+	// This is in prep for go 1.13
+	//commandFilesPath := filepath.Join(UserConfigDir(), "Raijinsoft", "launch", "commands")
 	err := configdir.MakePath(commandFilesPath)
 
 	if err != nil {
