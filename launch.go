@@ -20,6 +20,7 @@ func main() {
 	}
 
 	scriptSystem := NewScriptSystem()
+	defer scriptSystem.DestroyScriptSystem()
 
 	var commands *Commands
 
