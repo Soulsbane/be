@@ -24,14 +24,14 @@ func main() {
 
 	var commands *Commands
 
-	commands = NewCommands()
-	commands.AddCommand("wow", "lsd")
-	commands.AddOutputCommand("lsd", "lsd -lt")
-
-	scriptSystem.SetGlobal("Commands", commands)
-	scriptSystem.DoFiles(commandFilesPath)
-
 	if len(os.Args) >= 2 {
+		commands = NewCommands()
+		commands.AddCommand("wow", "lsd")
+		commands.AddOutputCommand("lsd", "lsd -lt")
+
+		scriptSystem.SetGlobal("Commands", commands)
+		scriptSystem.DoFiles(commandFilesPath)
+
 		commandName := os.Args[1]
 
 		if commandName == "list" {
@@ -41,6 +41,6 @@ func main() {
 			commands.run(commandName)
 		}
 	} else {
-		fmt.Println("Invalid option passed!")
+		fmt.Println("No command passed! Use 'launch list' for a list of commands.")
 	}
 }
