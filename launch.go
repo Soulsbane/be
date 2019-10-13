@@ -4,21 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/kirsle/configdir"
 )
 
+const companyName = "Raijinsoft"
+const apllicationName = "launch"
+
 func main() {
-	configPath := configdir.LocalConfig("Raijinsoft/launch")
-	commandFilesPath := filepath.Join(configPath, "commands")
-	// This is in prep for go 1.13
-	//commandFilesPath := filepath.Join(UserConfigDir(), "Raijinsoft", "launch", "commands")
-	err := configdir.MakePath(commandFilesPath)
-
-	if err != nil {
-		panic(err)
-	}
-
 	scriptSystem := NewScriptSystem()
 	defer scriptSystem.DestroyScriptSystem()
 
@@ -30,7 +21,7 @@ func main() {
 		commands.AddOutputCommand("lsd", "lsd -lt")
 
 		scriptSystem.SetGlobal("Commands", commands)
-		scriptSystem.DoFiles(commandFilesPath)
+		scriptSystem.DoFiles(setupCommandFilesDir())
 
 		commandName := os.Args[1]
 
@@ -43,4 +34,18 @@ func main() {
 	} else {
 		fmt.Println("No command passed! Use 'launch list' for a list of commands.")
 	}
+}
+
+func setupCommandFilesDir() string {
+	// NOTE: This function is only available in Go 1.13
+	configPath, _ := os.UserConfigDir()
+	commandFilesDir := filepath.Join(configPath, companyName, apllicationName, "commands")
+
+	err := os.MkdirAll(commandFilesDir, os.ModePerm)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return commandFilesDir
 }
