@@ -13,9 +13,9 @@ func main() {
 	scriptSystem := NewScriptSystem()
 	defer scriptSystem.DestroyScriptSystem()
 
-	var commands *Commands
-
 	if len(os.Args) >= 2 {
+		var commands *Commands
+
 		commands = NewCommands()
 		commands.AddCommand("wow", "lsd")
 		commands.AddOutputCommand("lsd", "lsd -lt")
