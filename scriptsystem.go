@@ -33,6 +33,11 @@ func (s *ScriptSystem) DestroyScriptSystem() {
 	s.state.Close()
 }
 
+// NewTable Creates a new table
+func (s *ScriptSystem) NewTable() *lua.LTable {
+	return s.state.NewTable()
+}
+
 // DoString Run the passed code string
 func (s *ScriptSystem) DoString(code string) {
 	s.state.DoString(code)

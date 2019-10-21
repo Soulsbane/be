@@ -4,10 +4,22 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	lua "github.com/yuin/gopher-lua"
 )
 
 const companyName = "Raijinsoft"
 const apllicationName = "launch"
+
+func createArgsTable(script *ScriptSystem) *lua.LTable {
+	tbl := script.NewTable()
+
+	for _, arg := range os.Args[2:] {
+		tbl.Append(lua.LString(arg))
+	}
+
+	return tbl
+}
 
 func main() {
 	scriptSystem := NewScriptSystem()
@@ -20,6 +32,7 @@ func main() {
 		commands.AddCommand("wow", "lsd")
 		commands.AddOutputCommand("lsd", "lsd -lt")
 
+		scriptSystem.SetGlobal("Args", createArgsTable(scriptSystem))
 		scriptSystem.SetGlobal("Commands", commands)
 		scriptSystem.DoFiles(setupCommandFilesDir())
 
