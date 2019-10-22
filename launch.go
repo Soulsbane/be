@@ -11,16 +11,6 @@ import (
 const companyName = "Raijinsoft"
 const applicationName = "launch"
 
-func createArgsTable(script *ScriptSystem) *lua.LTable {
-	tbl := script.NewTable()
-
-	for _, arg := range os.Args[2:] {
-		tbl.Append(lua.LString(arg))
-	}
-
-	return tbl
-}
-
 func main() {
 	scriptSystem := NewScriptSystem()
 	defer scriptSystem.DestroyScriptSystem()
@@ -47,6 +37,16 @@ func main() {
 	} else {
 		fmt.Println("No command passed! Use 'launch list' for a list of commands.")
 	}
+}
+
+func createArgsTable(script *ScriptSystem) *lua.LTable {
+	tbl := script.NewTable()
+
+	for _, arg := range os.Args[2:] {
+		tbl.Append(lua.LString(arg))
+	}
+
+	return tbl
 }
 
 func setupCommandFilesDir() string {
