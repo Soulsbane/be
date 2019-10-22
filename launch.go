@@ -9,7 +9,7 @@ import (
 )
 
 const companyName = "Raijinsoft"
-const apllicationName = "launch"
+const applicationName = "launch"
 
 func createArgsTable(script *ScriptSystem) *lua.LTable {
 	tbl := script.NewTable()
@@ -52,7 +52,7 @@ func main() {
 func setupCommandFilesDir() string {
 	// NOTE: This function is only available in Go 1.13
 	configPath, _ := os.UserConfigDir()
-	commandFilesDir := filepath.Join(configPath, companyName, apllicationName, "commands")
+	commandFilesDir := filepath.Join(configPath, companyName, applicationName, "commands")
 
 	err := os.MkdirAll(commandFilesDir, os.ModePerm)
 
