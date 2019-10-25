@@ -44,21 +44,29 @@ func NewCommands() *Commands {
 
 // AddCommand adds a command to the list of commands.
 func (c *Commands) AddCommand(name string, commandString string) {
-	if c.HasCommand(name) {
-		fmt.Println(name, "command name already exists!")
+	if IsReservedCommandName(name) {
+		fmt.Println(name, "is a reserved command name!")
 	} else {
-		var newCommand = command{name, commandString, false}
-		c.commandsArray = append(c.commandsArray, newCommand)
+		if c.HasCommand(name) {
+			fmt.Println(name, "command name already exists!")
+		} else {
+			var newCommand = command{name, commandString, false}
+			c.commandsArray = append(c.commandsArray, newCommand)
+		}
 	}
 }
 
 // AddOutputCommand adds a command to the list of commands and outputs its result.
 func (c *Commands) AddOutputCommand(name string, commandString string) {
-	if c.HasCommand(name) {
-		fmt.Println(name, "command name already exists!")
+	if IsReservedCommandName(name) {
+		fmt.Println(name, "is a reserved command name!")
 	} else {
-		var newCommand = command{name, commandString, true}
-		c.commandsArray = append(c.commandsArray, newCommand)
+		if c.HasCommand(name) {
+			fmt.Println(name, "command name already exists!")
+		} else {
+			var newCommand = command{name, commandString, true}
+			c.commandsArray = append(c.commandsArray, newCommand)
+		}
 	}
 }
 
