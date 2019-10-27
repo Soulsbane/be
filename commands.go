@@ -17,8 +17,7 @@ type command struct {
 
 // Commands holds a list of commands.
 type Commands struct {
-	commandsArray  []command
-	additionalArgs []string
+	commandsArray []command
 }
 
 // NewCommands Initializes the command map
@@ -30,7 +29,6 @@ func NewCommands() *Commands {
 		passedArgs = passedArgs[1:]
 	}
 
-	newCommands.additionalArgs = passedArgs
 	newCommands.commandsArray = []command{
 		command{
 			commandName:   "",
@@ -79,11 +77,6 @@ func (c *Commands) HasCommand(name string) bool {
 	}
 
 	return false
-}
-
-// GetAdditionalArgs returns arguments to a command
-func (c *Commands) GetAdditionalArgs() []string {
-	return c.additionalArgs
 }
 
 func (c *Commands) getCommandIndex(name string) int {
