@@ -19,8 +19,6 @@ func main() {
 		var commands *Commands
 
 		commands = NewCommands()
-		commands.AddOutputCommand("wow", "lsd")
-		commands.AddOutputCommand("lsd", "lsd -lt")
 
 		scriptSystem.SetGlobal("Args", createArgsTable(scriptSystem))
 		scriptSystem.SetGlobal("Commands", commands)
