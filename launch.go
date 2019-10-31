@@ -19,12 +19,12 @@ func main() {
 		var commands *Commands
 
 		commands = NewCommands()
-		commands.AddCommand("wow", "lsd")
+		commands.AddOutputCommand("wow", "lsd")
 		commands.AddOutputCommand("lsd", "lsd -lt")
 
 		scriptSystem.SetGlobal("Args", createArgsTable(scriptSystem))
 		scriptSystem.SetGlobal("Commands", commands)
-		scriptSystem.DoFiles(setupCommandFilesDir())
+		scriptSystem.DoFiles(setupCommandFilesDir(), true)
 
 		commandName := os.Args[1]
 
