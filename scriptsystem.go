@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"path"
@@ -24,19 +23,24 @@ func NewScriptSystem() *ScriptSystem {
 	return &scriptSystem
 }
 
-func (s *ScriptSystem) onCreate() {
-	runParam := lua.P{
-		Fn:      s.state.GetGlobal("OnCreate"),
-		NRet:    0,
-		Protect: true,
+// CallFunc Call a Lua function
+func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, shouldPanic bool, args ...lua.LValue) {
+	luaFunc := lua.P{
+		Fn:      s.state.GetGlobal(funcName),
+		NRet:    numReturnValues,
+		Protect: shouldPanic,
 	}
 
-	err := s.state.CallByParam(runParam)
+	err := s.state.CallByParam(luaFunc, args...)
 
 	if err != nil {
-		// An OnCreate function is optional
-		fmt.Println("No OnCreate function found")
+		//fmt.Println("Function name", funcName, "not found")
 	}
+}
+
+func (s *ScriptSystem) onCreate() {
+	s.CallFunc("OnCreate", 0, true)
+	//s.CallFunc("TestArgFunc", 0, true, lua.LNumber(10), lua.LString("hello world"))
 }
 
 // SetGlobal Just like the Lua version.
