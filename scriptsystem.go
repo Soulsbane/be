@@ -24,11 +24,11 @@ func NewScriptSystem() *ScriptSystem {
 }
 
 // CallFunc Call a Lua function
-func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, shouldPanic bool, args ...lua.LValue) {
+func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnError bool, args ...lua.LValue) {
 	luaFunc := lua.P{
 		Fn:      s.state.GetGlobal(funcName),
 		NRet:    numReturnValues,
-		Protect: shouldPanic,
+		Protect: returnError,
 	}
 
 	err := s.state.CallByParam(luaFunc, args...)
