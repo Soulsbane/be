@@ -24,23 +24,33 @@ func NewScriptSystem() *ScriptSystem {
 }
 
 // CallFunc Call a Lua function
-func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnError bool, args ...lua.LValue) {
+func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnError bool, args ...lua.LValue) lua.LValue {
 	luaFunc := lua.P{
 		Fn:      s.state.GetGlobal(funcName),
 		NRet:    numReturnValues,
 		Protect: returnError,
 	}
 
+	var returnVal lua.LValue
+
 	err := s.state.CallByParam(luaFunc, args...)
 
 	if err != nil {
 		//fmt.Println("Function name", funcName, "not found")
 	}
+
+	if numReturnValues == 1 {
+		returnVal = s.state.Get(-1)
+		s.state.Pop(1)
+	}
+
+	return returnVal
 }
 
 func (s *ScriptSystem) onCreate() {
 	s.CallFunc("OnCreate", 0, true)
-	//s.CallFunc("TestArgFunc", 0, true, lua.LNumber(10), lua.LString("hello world"))
+	//returnVal := s.CallFunc("TestArgFunc", 1, true, lua.LNumber(10), lua.LString("hello world"))
+	//fmt.Println(returnVal)
 }
 
 // SetGlobal Just like the Lua version.
