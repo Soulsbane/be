@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"path"
@@ -36,7 +37,7 @@ func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnErro
 	err := s.state.CallByParam(luaFunc, args...)
 
 	if err != nil {
-		//fmt.Println("Function name", funcName, "not found")
+		fmt.Println("Function name", funcName, "not found")
 	}
 
 	if numReturnValues == 1 {
@@ -47,10 +48,19 @@ func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnErro
 	return returnVal
 }
 
+// CallFuncSimple This is just sugar for calling a Lua function without having to deal with additional parameters.
+func (s *ScriptSystem) CallFuncSimple(funcName string, args ...lua.LValue) {
+	s.CallFunc(funcName, 0, true)
+}
+
+// CallFuncWithReturn Call a Lua function that has one return value
+func (s *ScriptSystem) CallFuncWithReturn(funcName string, args ...lua.LValue) lua.LValue {
+	return s.CallFunc(funcName, 1, true)
+}
+
 func (s *ScriptSystem) onCreate() {
-	s.CallFunc("OnCreate", 0, true)
-	//returnVal := s.CallFunc("TestArgFunc", 1, true, lua.LNumber(10), lua.LString("hello world"))
-	//fmt.Println(returnVal)
+	s.CallFuncSimple("OnCreate")
+	//returnVal := s.CallFuncWithReturn("TestArgFunc", lua.LNumber(10), lua.LString("hello world"))
 }
 
 // SetGlobal Just like the Lua version.
