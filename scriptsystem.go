@@ -63,6 +63,10 @@ func (s *ScriptSystem) onCreate() {
 	//returnVal := s.CallFuncWithReturn("TestArgFunc", lua.LNumber(10), lua.LString("hello world"))
 }
 
+func (s *ScriptSystem) onDistroy() {
+	s.CallFuncSimple("OnDistroy")
+}
+
 // SetGlobal Just like the Lua version.
 func (s *ScriptSystem) SetGlobal(name string, value interface{}) {
 	s.state.SetGlobal(name, luar.New(s.state, value))
