@@ -22,6 +22,7 @@ func main() {
 
 		scriptSystem.SetGlobal("Args", createArgsTable(scriptSystem))
 		scriptSystem.SetGlobal("Commands", commands)
+		scriptSystem.SetGlobal("IsReservedCommandName", IsReservedCommandName)
 		scriptSystem.DoFiles(setupCommandFilesDir(), true)
 
 		commandName := os.Args[1]
