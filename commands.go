@@ -128,10 +128,6 @@ func (c *Commands) handleMultiCommand(args []string, showOutput bool) {
 	}
 }
 
-func (c *Commands) runCommandAtIndex(index int) {
-	fmt.Println(c.commandsArray[index].commandName)
-}
-
 func (c *Commands) run(name string) {
 	index := c.getCommandIndex(name)
 
