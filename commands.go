@@ -62,6 +62,21 @@ func (c *Commands) AddCommandIfAvailable(name string, commandString string, show
 	}
 }
 
+// RemoveCommand Removes a command.
+func (c *Commands) RemoveCommand(name string) {
+	if IsReservedCommandName(name) {
+		fmt.Println(name, "is a reserved command name!")
+	} else {
+		if c.HasCommand(name) {
+			for i, v := range c.commandsArray {
+				if v.commandName == name {
+					c.commandsArray = append(c.commandsArray[:i], c.commandsArray[i+1:]...)
+				}
+			}
+		}
+	}
+}
+
 // HasCommand returns whether a map key exists.
 func (c *Commands) HasCommand(name string) bool {
 	for i := range c.commandsArray {
