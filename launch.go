@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mingrammer/cfmt"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -34,7 +35,7 @@ func main() {
 			commands.run(commandName)
 		}
 	} else {
-		fmt.Println("No command passed! Use 'launch list' for a list of commands.")
+		cfmt.Errorln("No command passed! Use 'launch list' for a list of commands.")
 	}
 }
 

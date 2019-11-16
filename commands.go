@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/brettski/go-termtables"
+	cfmt "github.com/mingrammer/cfmt"
 )
 
 type command struct {
@@ -53,9 +54,9 @@ func (c *Commands) AddOutputCommand(name string, commandString string) {
 // AddCommandIfAvailable Returns true if a command name is available otherwise false
 func (c *Commands) AddCommandIfAvailable(name string, commandString string, showOutput bool) {
 	if IsReservedCommandName(name) {
-		fmt.Println(name, "is a reserved command name!")
+		cfmt.Errorf("'%s' is a reserved command name!\n", name)
 	} else if c.HasCommand(name) {
-		fmt.Println(name, "command name already exists!")
+		cfmt.Errorf("'%s' command already exists!\n", name)
 	} else {
 		var newCommand = command{name, commandString, showOutput}
 		c.commandsArray = append(c.commandsArray, newCommand)
@@ -65,7 +66,7 @@ func (c *Commands) AddCommandIfAvailable(name string, commandString string, show
 // RemoveCommand Removes a command.
 func (c *Commands) RemoveCommand(name string) {
 	if IsReservedCommandName(name) {
-		fmt.Println(name, "is a reserved command name!")
+		cfmt.Errorf("'%s' is a reserved command name!\n", name)
 	} else {
 		if c.HasCommand(name) {
 			for i, v := range c.commandsArray {
@@ -144,7 +145,7 @@ func (c *Commands) run(name string) {
 			}
 		}
 	} else {
-		fmt.Println("Command not found: ", name)
+		cfmt.Errorf("'%s' command was not found!\n", name)
 	}
 }
 
@@ -156,5 +157,5 @@ func (c *Commands) list() {
 		table.AddRow(c.commandsArray[i].commandName, c.commandsArray[i].commandString)
 	}
 
-	fmt.Println(table.Render())
+	cfmt.Successln(table.Render())
 }
