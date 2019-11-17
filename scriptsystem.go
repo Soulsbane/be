@@ -91,14 +91,12 @@ func (s *ScriptSystem) DoString(code string) {
 func (s *ScriptSystem) DoFile(fileName string, callOnCreate bool) {
 
 	if callOnCreate {
-		fn, err := s.state.LoadFile(fileName)
+		err := s.state.DoFile(fileName)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		s.state.Push(fn)
-		s.state.PCall(0, lua.MultRet, nil)
 		s.onCreate()
 
 	} else {
