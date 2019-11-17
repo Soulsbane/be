@@ -63,8 +63,8 @@ func (s *ScriptSystem) onCreate() {
 	//returnVal := s.CallFuncWithReturn("TestArgFunc", lua.LNumber(10), lua.LString("hello world"))
 }
 
-func (s *ScriptSystem) onDistroy() {
-	s.CallFuncSimple("OnDistroy")
+func (s *ScriptSystem) onDestroy() {
+	s.CallFuncSimple("OnDestroy")
 }
 
 // SetGlobal Just like the Lua version.
