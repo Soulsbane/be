@@ -74,6 +74,7 @@ func (s *ScriptSystem) SetGlobal(name string, value interface{}) {
 
 // DestroyScriptSystem Calls lua.LState.Close
 func (s *ScriptSystem) DestroyScriptSystem() {
+	s.onDestroy()
 	s.state.Close()
 }
 
