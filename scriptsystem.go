@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"path"
@@ -34,11 +33,13 @@ func (s *ScriptSystem) CallFunc(funcName string, numReturnValues int, returnErro
 
 	var returnVal lua.LValue
 
-	err := s.state.CallByParam(luaFunc, args...)
+	/*err := s.state.CallByParam(luaFunc, args...)
 
 	if err != nil {
 		fmt.Println("Function name", funcName, "not found")
-	}
+	}*/
+
+	s.state.CallByParam(luaFunc, args...)
 
 	if numReturnValues == 1 {
 		returnVal = s.state.Get(-1)
