@@ -6,6 +6,7 @@
 *.dylib
 main
 launch
+be
 
 # Test binary, built with `go test -c`
 *.test

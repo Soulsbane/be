@@ -12,13 +12,16 @@ import (
 
 // ScriptSystem use Lua for scripting.
 type ScriptSystem struct {
-	state *lua.LState
+	state  *lua.LState
+	errors *ScriptErrors
 }
 
 // NewScriptSystem Initializes the Lua Script System
-func NewScriptSystem() *ScriptSystem {
+func NewScriptSystem(errors *ScriptErrors) *ScriptSystem {
 	var scriptSystem ScriptSystem
+
 	scriptSystem.state = lua.NewState()
+	scriptSystem.errors = errors
 
 	return &scriptSystem
 }
@@ -94,7 +97,7 @@ func (s *ScriptSystem) DoFile(fileName string, callOnCreate bool) {
 	err := s.state.DoFile(fileName)
 
 	if err != nil {
-		log.Fatal(err)
+		s.errors.Fatal(err)
 	}
 
 	if callOnCreate {
@@ -125,7 +128,7 @@ func (s *ScriptSystem) LoadFile(fileName string) (*lua.LFunction, error) {
 	luaFunc, err := s.state.LoadFile(fileName)
 
 	if err != nil {
-		log.Fatal(err)
+		s.errors.Fatal(err)
 	}
 
 	return luaFunc, err

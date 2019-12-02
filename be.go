@@ -10,10 +10,13 @@ import (
 )
 
 const companyName = "Raijinsoft"
-const applicationName = "launch"
+const applicationName = "launch" // FIXME: Change to be at some point.
 
 func main() {
-	scriptSystem := NewScriptSystem()
+	var errors *ScriptErrors
+
+	errors = NewScriptErrors()
+	scriptSystem := NewScriptSystem(errors)
 	defer scriptSystem.DestroyScriptSystem()
 
 	if len(os.Args) >= 2 {
@@ -21,6 +24,7 @@ func main() {
 
 		commands = NewCommands()
 
+		scriptSystem.SetGlobal("ScriptErrors", errors)
 		scriptSystem.SetGlobal("Args", createArgsTable(scriptSystem))
 		scriptSystem.SetGlobal("Commands", commands)
 		scriptSystem.SetGlobal("IsReservedCommandName", IsReservedCommandName)
