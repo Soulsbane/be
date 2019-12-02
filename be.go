@@ -10,7 +10,7 @@ import (
 )
 
 const companyName = "Raijinsoft"
-const applicationName = "launch" // FIXME: Change to be at some point.
+const applicationName = "be"
 
 func main() {
 	var errors *ScriptErrors
